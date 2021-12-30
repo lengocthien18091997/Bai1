@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ho ten sinh vien"
+        android:textSize="24sp"
+        android:textColor="#000"
+        android:id="@+id/textviewhoten" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nam sinh"
+        android:textSize="18sp"
+        android:textColor="#ff0000"
+        android:id="@+id/textviewnamsinh"
+        android:layout_below="@+id/textviewhoten"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dia chi"
+        android:textSize="18sp"
+        android:textColor="#ff0000"
+        android:id="@+id/textviewdiachi"
+        android:layout_below="@+id/textviewnamsinh"/>
+
+    <ImageView
+        android:id="@+id/imageviewedit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_edit"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentRight="true"/>
+
+    <ImageView
+        android:id="@+id/imageviewdel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:layout_toLeftOf="@+id/imageviewedit"
+        />
+
+</RelativeLayout>
