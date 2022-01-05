@@ -62,23 +62,16 @@ public class AddStudentActivity extends AppCompatActivity {
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-//                            if (response.trim().equals("success")) {
-                                Toast.makeText(AddStudentActivity.this, "Them thanh cong", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(AddStudentActivity.this, MainActivity.class));
-//                            } else {
-//                                Toast.makeText(AddStudentActivity.this, "Them loi", Toast.LENGTH_SHORT).show();
-//                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        Toast.makeText(AddStudentActivity.this, "Them thanh cong", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(AddStudentActivity.this, MainActivity.class));
+
                     }
                 },
                 new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AddStudentActivity.this, "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddStudentActivity.this, "Them that bai!", Toast.LENGTH_SHORT).show();
+                        Log.d("Bai1", "onErrorResponse: "+ error);
                     }
                 }
         ){
