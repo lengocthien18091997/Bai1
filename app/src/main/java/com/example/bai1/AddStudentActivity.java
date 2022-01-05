@@ -21,6 +21,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,8 +44,15 @@ public class AddStudentActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int year = Integer.parseInt(editTextYear.getText().toString());
-               addStudent ("http://10.0.5.54/web/insert.php", new SinhVien(0, editTextName.getText().toString(), year, editTextAddress.getText().toString()));
+                String err = validateAddActivity();
+                if (err.equals("ok")) {
+                    addStudent ("http://10.0.5.54/web/insert.php", new SinhVien(0,
+                            editTextName.getText().toString(),
+                            Integer.parseInt(editTextYear.getText().toString()),
+                            editTextAddress.getText().toString()));
+                } else {
+                    Toast.makeText(AddStudentActivity.this, err, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +61,26 @@ public class AddStudentActivity extends AppCompatActivity {
                 AddStudentActivity.this.startActivity(new Intent(AddStudentActivity.this, MainActivity.class));
             }
         });
+    }
+
+    private String validateAddActivity() {
+        String err = "ok";
+        String name = editTextName.getText().toString().trim();
+        String year = editTextYear.getText().toString().trim();
+        String address = editTextAddress.getText().toString().trim();
+        if (name.isEmpty() || year.isEmpty() || address.isEmpty()) {
+            err = "Nhập thiếu hạng mục!";
+        } else if (!isNumeric(year)){
+            err = "Nhập sai định dạng năm sinh!";
+        }
+        return err;
+    }
+
+    private boolean isNumeric(String year) {
+        NumberFormat formatter = NumberFormat.getInstance();
+        ParsePosition pos = new ParsePosition(0);
+        formatter.parse(year, pos);
+        return year.length() == pos.getIndex();
     }
 
     private void addStudent(String url, SinhVien sinhVien) {

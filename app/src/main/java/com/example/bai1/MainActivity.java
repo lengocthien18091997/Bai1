@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         sinhVienAdapter = new SinhVienAdapter(this, R.layout.dong_sinh_vien, sinhVienArrayList);
         listViewSinhVien.setAdapter(sinhVienAdapter);
 
-        getData("http://10.0.5.54/web/demo.php");
+        getData("http://10.0.5.54/web/view.php");
     }
 
     private void getData (String url) {
