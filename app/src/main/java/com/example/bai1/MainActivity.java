@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menuAddStudent) {
-            startActivity(new Intent(this, AddStudentActivity.class));
+            startActivity(new Intent( MainActivity.this, AddStudentActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
