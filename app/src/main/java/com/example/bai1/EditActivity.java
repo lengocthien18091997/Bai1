@@ -3,8 +3,10 @@ package com.example.bai1;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,7 @@ public class EditActivity extends AppCompatActivity {
 
         anhXa();
         hienThi();
+
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,8 +44,9 @@ public class EditActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = getIntent();
-                SinhVien sinhVien = (SinhVien) i.getParcelableExtra("dataSV");
+                Intent intent = getIntent();
+                SinhVien sinhVien = (SinhVien) intent.getSerializableExtra("dataSV");
+                Log.i("AAA", "Thien: " + sinhVien.getId());
                 int id = sinhVien.getId();
                 String name = editTextName.getText().toString().trim();
                 String year = editTextYear.getText().toString().trim();
@@ -55,12 +59,16 @@ public class EditActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     private void anhXa() {
         editTextName = (EditText) findViewById(R.id.editTextTextPersonName);
         editTextYear = (EditText) findViewById(R.id.editTextTextYear);
         editTextAddress = (EditText) findViewById(R.id.editTextTextPersonAddress);
+        button = (Button) findViewById(R.id.button);
+        buttonCancel = (Button) findViewById(R.id.buttonCancel);
     }
 
     private void hienThi() {
@@ -74,13 +82,21 @@ public class EditActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.i("aaa",response);
+                        if (response.equals("success")) {
+                            Toast.makeText(EditActivity.this, "Sua thanh cong that", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(EditActivity.this, MainActivity.class));
+                        } else {
+                            Toast.makeText(EditActivity.this, "Sua xit", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(EditActivity.this, "Sua that bai!", Toast.LENGTH_SHORT).show();
+                        Log.d("Bai1", "onErrorResponse: " + error);
                     }
                 }
         ){
