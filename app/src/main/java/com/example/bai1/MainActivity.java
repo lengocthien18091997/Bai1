@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listViewSinhVien;
     ArrayList<SinhVien> sinhVienArrayList;
     SinhVienAdapter sinhVienAdapter;
+    ImageView imageViewEdit, imageViewDel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         sinhVienAdapter = new SinhVienAdapter(this, R.layout.dong_sinh_vien, sinhVienArrayList);
         listViewSinhVien.setAdapter(sinhVienAdapter);
-
         getData("http://10.0.5.54/web/view.php");
+
     }
 
     private void getData (String url) {
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menuAddStudent) {
-            startActivity(new Intent( MainActivity.this, AddStudentActivity.class));
+            startActivity(new Intent( MainActivity.this, AddActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

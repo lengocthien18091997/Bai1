@@ -1,6 +1,7 @@
 package com.example.bai1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,14 @@ public class SinhVienAdapter extends BaseAdapter {
         holder.txtHoTen.setText(sinhVien.getHoTen());
         holder.txtNamSinh.setText("Nam sinh: "+sinhVien.getNamSinh());
         holder.txtDiaChi.setText("Dia chi: "+sinhVien.getDiaChi());
+        holder.imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EditActivity.class);
+                intent.putExtra("dataSV", sinhVien);
+                context.startActivity(intent);
+            }
+        });
         return view;
     }
 }

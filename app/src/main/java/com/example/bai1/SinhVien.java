@@ -1,6 +1,8 @@
 package com.example.bai1;
 
-public class SinhVien {
+import java.io.Serializable;
+
+public class SinhVien implements Serializable {
     private int id;
     private String hoTen;
     private int namSinh;

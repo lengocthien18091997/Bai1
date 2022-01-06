@@ -1,6 +1,5 @@
 package com.example.bai1;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,22 +17,19 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddStudentActivity extends AppCompatActivity {
+public class AddActivity extends AppCompatActivity {
     private EditText editTextName, editTextYear, editTextAddress;
     private Button button, buttonCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_student);
+        setContentView(R.layout.activity_add);
 
         editTextName = (EditText) findViewById(R.id.editTextTextPersonName);
         editTextYear = (EditText) findViewById(R.id.editTextTextYear);
@@ -44,71 +40,51 @@ public class AddStudentActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String err = validateAddActivity();
+                String name = editTextName.getText().toString().trim();
+                String year = editTextYear.getText().toString().trim();
+                String address = editTextAddress.getText().toString().trim();
+                String err = Common.validateAddActivity(name, year, address);
                 if (err.equals("ok")) {
-                    addStudent ("http://10.0.5.54/web/insert.php", new SinhVien(0,
-                            editTextName.getText().toString(),
-                            Integer.parseInt(editTextYear.getText().toString()),
-                            editTextAddress.getText().toString()));
+                    addStudent("http://10.0.5.54/web/insert.php", new SinhVien(0, name, Integer.parseInt(year), address));
                 } else {
-                    Toast.makeText(AddStudentActivity.this, err, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddActivity.this, err, Toast.LENGTH_SHORT).show();
                 }
             }
         });
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddStudentActivity.this.startActivity(new Intent(AddStudentActivity.this, MainActivity.class));
+                AddActivity.this.startActivity(new Intent(AddActivity.this, MainActivity.class));
             }
         });
     }
 
-    private String validateAddActivity() {
-        String err = "ok";
-        String name = editTextName.getText().toString().trim();
-        String year = editTextYear.getText().toString().trim();
-        String address = editTextAddress.getText().toString().trim();
-        if (name.isEmpty() || year.isEmpty() || address.isEmpty()) {
-            err = "Nhập thiếu hạng mục!";
-        } else if (!isNumeric(year)){
-            err = "Nhập sai định dạng năm sinh!";
-        }
-        return err;
-    }
-
-    private boolean isNumeric(String year) {
-        NumberFormat formatter = NumberFormat.getInstance();
-        ParsePosition pos = new ParsePosition(0);
-        formatter.parse(year, pos);
-        return year.length() == pos.getIndex();
-    }
-
     private void addStudent(String url, SinhVien sinhVien) {
-        RequestQueue queue = Volley.newRequestQueue(AddStudentActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(AddActivity.this);
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 url,
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(AddStudentActivity.this, "Them thanh cong", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(AddStudentActivity.this, MainActivity.class));
+                        Toast.makeText(AddActivity.this, "Them thanh cong", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(AddActivity.this, MainActivity.class));
 
                     }
                 },
                 new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AddStudentActivity.this, "Them that bai!", Toast.LENGTH_SHORT).show();
-                        Log.d("Bai1", "onErrorResponse: "+ error);
+                        Toast.makeText(AddActivity.this, "Them that bai!", Toast.LENGTH_SHORT).show();
+                        Log.d("Bai1", "onErrorResponse: " + error);
                     }
                 }
-        ){
+        ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("hotenSV",sinhVien.getHoTen());
-                params.put("namsinhSV", sinhVien.getNamSinh()+"");
+                params.put("hotenSV", sinhVien.getHoTen());
+                params.put("namsinhSV", sinhVien.getNamSinh() + "");
                 params.put("diachiSV", sinhVien.getDiaChi());
                 return params;
             }
