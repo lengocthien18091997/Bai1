@@ -33,7 +33,9 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
 
         anhXa();
-        hienThi();
+        Intent intent = getIntent();
+        SinhVien sinhVien = (SinhVien) intent.getSerializableExtra("dataSV");
+        hienThi(sinhVien);
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,16 +46,13 @@ public class EditActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = getIntent();
-                SinhVien sinhVien = (SinhVien) intent.getSerializableExtra("dataSV");
-                Log.i("AAA", "Thien: " + sinhVien.getId());
                 int id = sinhVien.getId();
                 String name = editTextName.getText().toString().trim();
                 String year = editTextYear.getText().toString().trim();
                 String address = editTextAddress.getText().toString().trim();
                 String err = Common.validateAddActivity(name, year, address);
                 if (err.equals("ok")) {
-                    editStudent("http://10.0.5.54/web/edit.php", new SinhVien(id, name, Integer.parseInt(year), address));
+                    editStudent(Constant.URLEDIT, new SinhVien(id, name, Integer.parseInt(year), address));
                 } else {
                     Toast.makeText(EditActivity.this, err, Toast.LENGTH_SHORT).show();
                 }
@@ -71,7 +70,10 @@ public class EditActivity extends AppCompatActivity {
         buttonCancel = (Button) findViewById(R.id.buttonCancel);
     }
 
-    private void hienThi() {
+    private void hienThi(SinhVien sinhVien) {
+        editTextName.setText(sinhVien.getHoTen());
+        editTextYear.setText(sinhVien.getNamSinh()+"");
+        editTextAddress.setText(sinhVien.getDiaChi());
     }
 
     private void editStudent(String url, SinhVien sinhVien) {

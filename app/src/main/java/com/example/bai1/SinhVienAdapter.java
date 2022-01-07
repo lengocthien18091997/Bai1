@@ -1,7 +1,10 @@
 package com.example.bai1;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +16,11 @@ import java.util.List;
 
 public class SinhVienAdapter extends BaseAdapter {
 
-    private Context context;
+    private MainActivity context;
     private int layout;
     private List<SinhVien> sinhVienList;
 
-    public SinhVienAdapter(Context context, int layout, List<SinhVien> sinhVienList) {
+    public SinhVienAdapter(MainActivity context, int layout, List<SinhVien> sinhVienList) {
         this.context = context;
         this.layout = layout;
         this.sinhVienList = sinhVienList;
@@ -70,6 +73,30 @@ public class SinhVienAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, EditActivity.class);
                 intent.putExtra("dataSV", sinhVien);
                 context.startActivity(intent);
+            }
+        });
+        holder.imgDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setCancelable(true);
+                builder.setTitle("Xóa hay không nói 1 lời <3");
+                builder.setMessage("Cậu chắc chứ");
+                builder.setPositiveButton("Chắc",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                context.delStudent(sinhVien.getId());
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
         return view;

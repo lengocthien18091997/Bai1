@@ -5,16 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -22,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         sinhVienAdapter = new SinhVienAdapter(this, R.layout.dong_sinh_vien, sinhVienArrayList);
         listViewSinhVien.setAdapter(sinhVienAdapter);
-        getData("http://10.0.5.54/web/view.php");
+        getData(Constant.URLVIEW);
 
     }
 
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                sinhVienArrayList.clear();
                 for ( int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject object = response.getJSONObject(i);
@@ -85,5 +92,44 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent( MainActivity.this, AddActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void delStudent(int id) {
+        Log.i("aaa","this: "+ id);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                Constant.URLDEL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("aaa",response);
+                        if (response.equals("success")) {
+                            Toast.makeText(MainActivity.this, "Xoa thanh cong", Toast.LENGTH_SHORT).show();
+                            getData(Constant.URLVIEW);
+                        } else {
+                            Toast.makeText(MainActivity.this, "Xoa xit", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "Xoa that bai!", Toast.LENGTH_SHORT).show();
+                        Log.d("Bai1", "onErrorResponse: " + error);
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id+"");
+                Log.i("aaa", "this2"+ id);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 }

@@ -45,7 +45,7 @@ public class AddActivity extends AppCompatActivity {
                 String address = editTextAddress.getText().toString().trim();
                 String err = Common.validateAddActivity(name, year, address);
                 if (err.equals("ok")) {
-                    addStudent("http://10.0.5.54/web/insert.php", new SinhVien(0, name, Integer.parseInt(year), address));
+                    addStudent(Constant.URLADD, new SinhVien(0, name, Integer.parseInt(year), address));
                 } else {
                     Toast.makeText(AddActivity.this, err, Toast.LENGTH_SHORT).show();
                 }
